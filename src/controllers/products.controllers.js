@@ -1,3 +1,5 @@
+import Product from "../models/product.js";
+
 // Leer Todos los Productos
 export const readAllProducts = (req, res) => {};
 
