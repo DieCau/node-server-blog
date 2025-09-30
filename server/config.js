@@ -3,11 +3,12 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import "../db/config.js";
 
 export default class Server {
     constructor() {
         this.app = express();
-        this.port = process.env.PORT || 5001;
+        this.port = process.env.PORT || 5000;
         this.middlewares();
     }
 
