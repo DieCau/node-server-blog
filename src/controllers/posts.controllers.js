@@ -1,5 +1,6 @@
 import Post from "../models/post.js";
 
+//  Obtener Todos los Posts
 export const getPosts = async (req, res) => {
   try {
     const posts = await Post.find().sort({ createdAt: -1 });
@@ -9,6 +10,7 @@ export const getPosts = async (req, res) => {
   }
 };
 
+// Crear Post
 export const createPost = async (req, res) => {
   try {
     const newPost = new Post(req.body);

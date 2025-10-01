@@ -1,5 +1,6 @@
 import Comment from "../models/comment.js";
 
+// Obtener commentarios por Post
 export const getCommentsByPost = async (req, res) => {
   try {
     const comments = await Comment.find({ postId: req.params.postId }).sort({ createdAt: 1 });
@@ -9,6 +10,7 @@ export const getCommentsByPost = async (req, res) => {
   }
 };
 
+// Crear Comentario
 export const createComment = async (req, res) => {
   try {
     const newComment = new Comment(req.body);
