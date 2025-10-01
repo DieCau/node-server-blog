@@ -1,40 +1,21 @@
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
-import morgan from 'morgan';
-import dotenv from "dotenv";
-import http from "http";
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import ServerBlog from "./server/config.js"
 import { Server } from "socket.io";
 
 import postRoutes from "./src/routes/posts.routes.js";
 import commentRoutes from "./src/routes/comments.routes.js";
 
-dotenv.config();
+const serverBlog = new ServerBlog();
+const app = serverBlog.getApp();
+const httpServer = serverBlog.getHttpServer();
 
-const app = express();
-const server = http.createServer(app);
-
-const io = new Server(server, {
+const io = new Server(httpServer, {
   cors: { origin: "*" }
 });
-
-// Middlewares
-app.use(cors());
-app.use(express.json());
-app.use(morgan('dev'));
-const __dirname = dirname(fileURLToPath(import.meta.url));
-app.use(express.static(`${__dirname}/public`));
 
 // Rutas REST
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 
-// Conectar MongoDB
-mongoose.connect(process.env.MONGO_DB)
-  .then(() => console.log("✅ MongoDB Atlas conectado"))
-  .catch(err => console.error("❌ Error MongoDB:", err));
 
 // WebSockets
 io.on("connection", (socket) => {
@@ -51,5 +32,4 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`));
+serverBlog.listen();
